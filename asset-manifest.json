@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/circles-link-app/static/css/main.46903f9e.css",
-    "main.js": "/circles-link-app/static/js/main.6666f4b3.js",
+    "main.js": "/circles-link-app/static/js/main.3e0122f0.js",
     "index.html": "/circles-link-app/index.html",
     "main.46903f9e.css.map": "/circles-link-app/static/css/main.46903f9e.css.map",
-    "main.6666f4b3.js.map": "/circles-link-app/static/js/main.6666f4b3.js.map"
+    "main.3e0122f0.js.map": "/circles-link-app/static/js/main.3e0122f0.js.map"
   },
   "entrypoints": [
     "static/css/main.46903f9e.css",
-    "static/js/main.6666f4b3.js"
+    "static/js/main.3e0122f0.js"
   ]
 }
