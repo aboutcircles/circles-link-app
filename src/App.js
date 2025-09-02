@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { ProviderProvider, useProvider } from './contexts/ProviderContext';
 import ConnectWallet from './components/ConnectWallet';
 import LinkForm from './components/LinkForm';
-import UnlinkForm from './components/UnlinkForm';
+import DirectLinkForm from './components/DirectLinkForm';
+import ConnectedAccounts from './components/ConnectedAccounts';
+
 import './App.css';
 
-function App() {
-  const [account, setAccount] = useState(null);
-  const [, setProvider] = useState(null);
-  const [activeTab, setActiveTab] = useState('link');
+// Main app content that uses the provider context
+function AppContent() {
+  const { account } = useProvider();
+  const [activeTab, setActiveTab] = useState('connected');
 
-  const handleConnect = (accountAddress, providerInstance) => {
-    setAccount(accountAddress);
-    setProvider(providerInstance);
+  const handleConnect = (accountAddress) => {
+    console.log('Connected to account:', accountAddress);
   };
 
   return (
@@ -44,27 +46,48 @@ function App() {
         <>
           <div className="tabs">
             <button 
+              className={`tab ${activeTab === 'connected' ? 'active' : ''}`}
+              onClick={() => setActiveTab('connected')}
+            >
+              Connected Accounts
+            </button>
+            <button 
+              className={`tab ${activeTab === 'direct' ? 'active' : ''}`}
+              onClick={() => setActiveTab('direct')}
+            >
+              Direct Link
+            </button>
+            <button 
               className={`tab ${activeTab === 'link' ? 'active' : ''}`}
               onClick={() => setActiveTab('link')}
             >
               Link Accounts
             </button>
-            <button 
-              className={`tab ${activeTab === 'unlink' ? 'active' : ''}`}
-              onClick={() => setActiveTab('unlink')}
-            >
-              Unlink Accounts
-            </button>
           </div>
 
-          {activeTab === 'link' ? (
-            <LinkForm account={account} />
-          ) : (
-            <UnlinkForm account={account} />
+          {activeTab === 'connected' && (
+            <ConnectedAccounts />
+          )}
+          
+          {activeTab === 'direct' && (
+            <DirectLinkForm />
+          )}
+          
+          {activeTab === 'link' && (
+            <LinkForm />
           )}
         </>
       )}
     </div>
+  );
+}
+
+// Root App component with provider wrapper
+function App() {
+  return (
+    <ProviderProvider>
+      <AppContent />
+    </ProviderProvider>
   );
 }
 

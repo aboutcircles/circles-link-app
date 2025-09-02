@@ -1,102 +1,149 @@
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { useProvider } from '../contexts/ProviderContext';
 
 const ConnectWallet = ({ onConnect }) => {
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [error, setError] = useState(null);
-  const [account, setAccount] = useState(null);
+  const { 
+    account, 
+    isConnecting, 
+    isConnected, 
+    isCorrectChain, 
+    currentWallet,
+    connectWallet, 
+    disconnect, 
+    switchChain,
+    getAvailableWallets
+  } = useProvider();
+
+  const [availableWallets, setAvailableWallets] = useState([]);
+  const [selectedWallet, setSelectedWallet] = useState('metamask');
 
   useEffect(() => {
-    // Check if MetaMask is already connected
-    const checkConnection = async () => {
-      if (window.ethereum) {
-        try {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          const accounts = await provider.listAccounts();
-          if (accounts.length > 0) {
-            setAccount(accounts[0]);
-            onConnect(accounts[0], provider);
-          }
-        } catch (err) {
-          console.error("Error checking connection:", err);
-        }
-      }
-    };
-
-    checkConnection();
-  }, [onConnect]);
-
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-          onConnect(accounts[0], new ethers.BrowserProvider(window.ethereum));
-        } else {
-          setAccount(null);
-        }
-      });
+    const wallets = getAvailableWallets();
+    console.log(wallets)
+    setAvailableWallets(wallets);
+    
+    // Set default wallet to the first available one
+    if (wallets.length > 0) {
+      setSelectedWallet(wallets[0].id);
     }
+  }, [getAvailableWallets]);
 
-    return () => {
-      if (window.ethereum && window.ethereum.removeListener) {
-        window.ethereum.removeListener('accountsChanged', () => {});
-      }
-    };
-  }, [onConnect]);
-
-  const connectWallet = async () => {
-    if (!window.ethereum) {
-      setError("MetaMask is not installed! Please install MetaMask to use this app.");
-      return;
-    }
-
-    setIsConnecting(true);
-    setError(null);
-
+  const handleConnect = async (walletId = selectedWallet) => {
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send("eth_requestAccounts", []);
-      
-      setAccount(accounts[0]);
-      onConnect(accounts[0], provider);
-    } catch (err) {
-      console.error("Error connecting wallet:", err);
-      setError("Error connecting wallet. Please try again.");
-    } finally {
-      setIsConnecting(false);
+      const accountData = await connectWallet(walletId);
+      onConnect(accountData, null); // Provider is now managed in context
+    } catch (error) {
+      console.error("Failed to connect:", error);
+      alert(`Failed to connect: ${error.message}`);
     }
   };
+
+  const handleSwitchChain = async () => {
+    try {
+      await switchChain();
+    } catch (error) {
+      console.error("Failed to switch chain:", error);
+      alert(`Failed to switch chain: ${error.message}`);
+    }
+  };
+
+  if (isConnected) {
+    return (
+      <div className="card">
+        <h2>Wallet Connected</h2>
+        <div className="account-info">
+          <p>Connected with {currentWallet ? availableWallets.find(w => w.id === currentWallet)?.name : 'Wallet'}:</p>
+          <div className="account-box">
+            {currentWallet && (
+              <span className="wallet-icon">
+                {availableWallets.find(w => w.id === currentWallet)?.icon}
+              </span>
+            )}
+            {account.address}
+          </div>
+          
+          {!isCorrectChain && (
+            <div className="chain-warning">
+              <p className="error">⚠️ Wrong network! Please switch to Gnosis Chain.</p>
+              <button onClick={handleSwitchChain} className="switch-chain-btn">
+                Switch to Gnosis Chain
+              </button>
+            </div>
+          )}
+          
+          {isCorrectChain && (
+            <p className="success">✅ Connected to Gnosis Chain</p>
+          )}
+          
+          <button onClick={disconnect} className="disconnect-btn">
+            Disconnect
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (availableWallets.length === 0) {
+    return (
+      <div className="card">
+        <h2>No Wallet Detected</h2>
+        <p>Please install MetaMask or Rabby wallet to continue:</p>
+        <div className="wallet-install-links">
+          <a 
+            href="https://metamask.io/download/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="install-link"
+          >
+            🦊 Install MetaMask
+          </a>
+          <a 
+            href="https://rabby.io/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="install-link"
+          >
+            🐰 Install Rabby
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="card">
       <h2>Connect Your Wallet</h2>
+      <p>Choose a wallet to connect:</p>
       
-      {account ? (
-        <div>
-          <div className="wallet-status">
-            <span className="status-indicator status-connected"></span>
-            <span>Connected</span>
-          </div>
-          <p>Your Account: <span className="account-box">{account.address}</span></p>
-        </div>
-      ) : (
-        <div>
-          <div className="wallet-status">
-            <span className="status-indicator status-disconnected"></span>
-            <span>Disconnected</span>
-          </div>
-          <p>Connect your MetaMask wallet to use the application.</p>
-          <button 
-            onClick={connectWallet} 
-            disabled={isConnecting}
+      <div className="wallet-options">
+        {availableWallets.map((wallet) => (
+          <div 
+            key={wallet.id} 
+            className={`wallet-option ${selectedWallet === wallet.id ? 'selected' : ''}`}
+            onClick={() => setSelectedWallet(wallet.id)}
           >
-            {isConnecting ? "Connecting..." : "Connect Wallet"}
-          </button>
-        </div>
-      )}
+            <span className="wallet-icon">{wallet.icon}</span>
+            <span className="wallet-name">{wallet.name}</span>
+            {selectedWallet === wallet.id && <span className="checkmark">✓</span>}
+          </div>
+        ))}
+      </div>
       
-      {error && <p className="error">{error}</p>}
+      <button 
+        onClick={() => handleConnect(selectedWallet)} 
+        disabled={isConnecting || !selectedWallet}
+        className="connect-btn"
+      >
+        {isConnecting ? (
+          <>
+            Connecting to {availableWallets.find(w => w.id === selectedWallet)?.name}...
+          </>
+        ) : (
+          <>
+            Connect {availableWallets.find(w => w.id === selectedWallet)?.name}
+          </>
+        )}
+      </button>
     </div>
   );
 };
