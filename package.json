@@ -1,7 +1,7 @@
 {
   "name": "circles-link-app",
   "version": "0.1.0",
-  "homepage": "https://web3skeptic.github.io/circles-link-app",
+  "homepage": "https://aboutcircles.github.io/circles-link-app",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
