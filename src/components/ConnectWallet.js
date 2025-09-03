@@ -61,15 +61,6 @@ const ConnectWallet = ({ onConnect }) => {
             {account.address}
           </div>
           
-          {!isCorrectChain && (
-            <div className="chain-warning">
-              <p className="error">⚠️ Wrong network! Please switch to Gnosis Chain.</p>
-              <button onClick={handleSwitchChain} className="switch-chain-btn">
-                Switch to Gnosis Chain
-              </button>
-            </div>
-          )}
-          
           {isCorrectChain && (
             <p className="success">✅ Connected to Gnosis Chain</p>
           )}

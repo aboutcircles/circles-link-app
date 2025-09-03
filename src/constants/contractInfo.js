@@ -1,12 +1,12 @@
 export const GNOSIS_RPC = "https://rpc.gnosischain.com";
 
 // PoH Membership condition
-export const POHMC_CONTRACT_ADDRESS = "0xAd71b4566df8216566dC1e37b4CcaBd8AAcbB794";
-export const POH_GROUP_ADDRESS = "0xA2965CDfEdFe02789a85b7788350E985a9CF40ec";
+export const POHMC_CONTRACT_ADDRESS = "0x32cB147E4C529DFFdB837f60f0118f2002401FCA";
+export const POH_GROUP_ADDRESS = "0xD55d4C7D48d8a4A158A1656356947BbF3f33f8d9";
 
 // PoH Service with register function
-export const GROUP_SERVICE_ADDRESS = "0x5d7298F4E31A97DD6B53bd196474c6467BF6e380";
-export const LINKING_CONTRACT_ADDRESS = "0x96aB250eEdEf0DE3abF7489C0180dc32C52b1831";
+export const GROUP_SERVICE_ADDRESS = "0xb5a7b74103AF9D6924B9f15Ab071aC48801E9B41";
+export const LINKING_CONTRACT_ADDRESS = "0x3DE001984A546a90d05375f968a05ac39B2D52E9";
 
 export const GROUP_SERVICE_ABI = [
   "function register(bytes20 humanityID, address _account) external"
