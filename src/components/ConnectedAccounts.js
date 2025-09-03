@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useProvider } from '../contexts/ProviderContext';
 import { 
-  getLinkedAccounts, 
   getCirclesAddressForExternal, 
   isCirclesAccount,
   getCirclesLinkedAccounts,
@@ -45,9 +44,7 @@ const ConnectedAccounts = () => {
       const hubContract = getHubContract();
       
       // Check if current account is Circles account
-      console.log("Checking account type for:", account.address);
       const circlesCheck = await isCirclesAccount(account.address, readOnlyContract);
-      console.log("Is Circles account:", circlesCheck);
       setIsCircles(circlesCheck);
 
       // Check PoH status for current account
@@ -79,7 +76,7 @@ const ConnectedAccounts = () => {
           if (isBidirectional && hasPoH && !pohAccountWithBidirectionalLink) {
             pohAccountWithBidirectionalLink = externalAddr;
           }
-          
+
           accounts.push({
             address: externalAddr,
             type: 'External Account',
@@ -92,7 +89,6 @@ const ConnectedAccounts = () => {
         console.log("Checking for linked Circles account...");
         // For external accounts, check if linked to a Circles account
         const circlesAddr = await getCirclesAddressForExternal(account.address, readOnlyContract);
-        console.log("Found Circles address:", circlesAddr);
         
         if (circlesAddr && circlesAddr !== '0x0000000000000000000000000000000000000000') {
           const isBidirectional = await isLinkEstablished(circlesAddr, account.address, readOnlyContract);
@@ -200,15 +196,17 @@ const ConnectedAccounts = () => {
       <div className="wallet-info">
         <div className="account-type-info">
           <span>Your Account Type: <strong>{isCircles ? 'Circles Account' : 'External Account'}</strong></span>
+          {currentAccountPoHStatus && (
           <div className="poh-status">
             PoH Status: {pohLoading ? (
               <span>Loading...</span>
             ) : (
-              <span className={currentAccountPoHStatus ? 'poh-verified' : 'poh-not-verified'}>
-                {currentAccountPoHStatus ? '✅ Verified' : '❌ Not Verified'}
+              <span className='poh-verified'>
+                ✅ Verified
               </span>
             )}
           </div>
+          )}
           {isCircles && (
             <div className="group-status">
               PoH Group Member: {pohLoading ? (
@@ -261,15 +259,17 @@ const ConnectedAccounts = () => {
                   <strong>{linked.type}:</strong> {linked.address}
                 </div>
                 <div className="status-badges">
-                  <div className="poh-badge">
-                    <span className={linked.hasPoH ? 'poh-verified' : 'poh-not-verified'}>
-                      {linked.hasPoH ? '✅ PoH Verified' : '❌ No PoH'}
-                    </span>
-                  </div>
-                  {linked.type === 'Circles Account' && (
+                  {linked.hasPoH && (
+                    <div className="poh-badge">
+                      <span className='poh-verified'>
+                        ✅ PoH Verified
+                      </span>
+                    </div>
+                  )}
+                  {linked.type === 'Circles Account' && linked.isGroupMember && (
                     <div className="group-badge">
-                      <span className={linked.isGroupMember ? 'group-member' : 'not-group-member'}>
-                        {linked.isGroupMember ? '🌟 PoH Group' : '⭕ Not in PoH Group'}
+                      <span className='group-member'>
+                        🌟 PoH Group
                       </span>
                     </div>
                   )}

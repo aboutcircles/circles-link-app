@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ProviderProvider, useProvider } from './contexts/ProviderContext';
 import ConnectWallet from './components/ConnectWallet';
 import LinkForm from './components/LinkForm';
@@ -19,27 +19,16 @@ function AppContent() {
   return (
     <div className="container">
       <header>
-        <h1>Circles Link Registry - Signature Generator</h1>
-        <p>Generate signatures to link your external accounts to Circles accounts using gasless operations</p>
+        <h1>Circles Link Registry</h1>
+        <p>Link your external addresses to Circle account</p>
       </header>
 
       <ConnectWallet onConnect={handleConnect} />
       
       <div className="card">
         <h2>About This Application</h2>
-        <p>This application allows you to generate signatures to link your external wallet to a Circles account using gasless operations.</p>
-        
-        <div className="nonce-info">
-          <h3>Important: Nonce Protection</h3>
-          <p>This application uses a nonce system to prevent signature replay attacks:</p>
-          <ul>
-            <li>Each pair of accounts (Circles and external) has a unique nonce value</li>
-            <li>The nonce is incremented after each successful operation</li>
-            <li>Signatures are only valid for the specific nonce value used to create them</li>
-            <li>If the nonce changes, you will need to generate new signatures</li>
-          </ul>
-          <p>Always make sure both parties are using the same nonce value when creating signatures.</p>
-        </div>
+        <p>This application allows you to link your external addresses to a Circles account.</p>
+        <p>"If a user has a Proof of Humanity (PoH) ID on any connected external account, or if their Circles account itself holds a PoH ID, they are eligible to join the PoH Circles Group.</p>
       </div>
 
       {account && (
@@ -55,14 +44,14 @@ function AppContent() {
               className={`tab ${activeTab === 'direct' ? 'active' : ''}`}
               onClick={() => setActiveTab('direct')}
             >
-              Direct Link
+              Link
             </button>
-            <button 
+            {/*<button 
               className={`tab ${activeTab === 'link' ? 'active' : ''}`}
               onClick={() => setActiveTab('link')}
             >
-              Link Accounts
-            </button>
+              Gasless Link
+            </button>*/}
           </div>
 
           {activeTab === 'connected' && (

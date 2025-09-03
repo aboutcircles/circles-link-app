@@ -1,18 +1,12 @@
 export const GNOSIS_RPC = "https://rpc.gnosischain.com";
 
-
-/*
-  PoHMembershipCondition: 0xf16723B8dAc923ca06187956cc21188150Cc738b
-  BaseGroup: 0xC400CDdE81c992237e35299fD0acA042C7Ca62Bb
-  PoHGroupService: 0x9e2B70c85949208cEDee05fE73516F34a5ffeBBa
-*/
 // PoH Membership condition
-export const POHMC_CONTRACT_ADDRESS = "0xf16723B8dAc923ca06187956cc21188150Cc738b";
-export const POH_GROUP_ADDRESS = "0xC400CDdE81c992237e35299fD0acA042C7Ca62Bb";
+export const POHMC_CONTRACT_ADDRESS = "0xAd71b4566df8216566dC1e37b4CcaBd8AAcbB794";
+export const POH_GROUP_ADDRESS = "0xA2965CDfEdFe02789a85b7788350E985a9CF40ec";
 
 // PoH Service with register function
-export const GROUP_SERVICE_ADDRESS = "0x9e2B70c85949208cEDee05fE73516F34a5ffeBBa";
-export const LINKING_CONTRACT_ADDRESS = "0x4Fe4215751F70cE4B8B4370De0b85c427C397EA8";
+export const GROUP_SERVICE_ADDRESS = "0x5d7298F4E31A97DD6B53bd196474c6467BF6e380";
+export const LINKING_CONTRACT_ADDRESS = "0x96aB250eEdEf0DE3abF7489C0180dc32C52b1831";
 
 export const GROUP_SERVICE_ABI = [
   "function register(bytes20 humanityID, address _account) external"
@@ -57,14 +51,6 @@ export const EIP712_DOMAIN = {
 
 export const LINK_REQUEST_TYPE = {
   LinkRequest: [
-    { name: "circlesAccount", type: "address" },
-    { name: "externalAccount", type: "address" },
-    { name: "nonce", type: "uint256" }
-  ]
-};
-
-export const UNLINK_REQUEST_TYPE = {
-  UnlinkRequest: [
     { name: "circlesAccount", type: "address" },
     { name: "externalAccount", type: "address" },
     { name: "nonce", type: "uint256" }

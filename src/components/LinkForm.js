@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { isAddress } from 'ethers';
 import { useProvider } from '../contexts/ProviderContext';
 import { createLinkTypedData, signTypedData } from '../utils/signatureUtils';

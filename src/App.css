@@ -209,14 +209,6 @@ input[type="text"] {
   font-size: 14px;
 }
 
-.account-box {
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-  background-color: #ffffff;
-}
-
 .account-header {
   display: flex;
   justify-content: space-between;

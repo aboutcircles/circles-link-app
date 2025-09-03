@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useProvider } from '../contexts/ProviderContext';
 
 const ConnectWallet = ({ onConnect }) => {
@@ -19,7 +19,6 @@ const ConnectWallet = ({ onConnect }) => {
 
   useEffect(() => {
     const wallets = getAvailableWallets();
-    console.log(wallets)
     setAvailableWallets(wallets);
     
     // Set default wallet to the first available one
@@ -31,7 +30,7 @@ const ConnectWallet = ({ onConnect }) => {
   const handleConnect = async (walletId = selectedWallet) => {
     try {
       const accountData = await connectWallet(walletId);
-      onConnect(accountData, null); // Provider is now managed in context
+      onConnect(accountData, null);
     } catch (error) {
       console.error("Failed to connect:", error);
       alert(`Failed to connect: ${error.message}`);

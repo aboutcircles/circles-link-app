@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { ethers } from "ethers";
 import { 
   LINKING_CONTRACT_ABI, 
@@ -173,7 +173,6 @@ export const ProviderProvider = ({ children }) => {
       }
       
       // Request accounts
-      const accounts = await walletProvider.request({ method: 'eth_requestAccounts' });
       const newProvider = new ethers.BrowserProvider(walletProvider);
       
       // Handle chain

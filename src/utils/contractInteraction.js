@@ -1,5 +1,16 @@
 import { ethers } from "ethers";
-import { LINKING_CONTRACT_ABI, LINKING_CONTRACT_ADDRESS, POHMC_CONTRACT_ABI, POHMC_CONTRACT_ADDRESS, HUB_ABI, HUB_ADDRESS, POH_GROUP_ADDRESS, GROUP_SERVICE_ABI, GROUP_SERVICE_ADDRESS, GNOSIS_RPC } from "../constants/contractInfo";
+import {
+  LINKING_CONTRACT_ABI,
+  LINKING_CONTRACT_ADDRESS,
+  POHMC_CONTRACT_ABI,
+  POHMC_CONTRACT_ADDRESS,
+  HUB_ABI,
+  HUB_ADDRESS,
+  POH_GROUP_ADDRESS,
+  GROUP_SERVICE_ABI,
+  GROUP_SERVICE_ADDRESS,
+  GNOSIS_RPC
+} from "../constants/contractInfo";
 
 // Read-only functions (don't need wallet connection)
 export const getReadOnlyProvider = () => {
@@ -81,9 +92,7 @@ export const getNonce = async (circlesAccount, externalAccount, contract = null)
 export const isCirclesAccount = async (address, contract = null) => {
   try {
     const contractInstance = contract || getReadOnlyContract();
-    const response = await contractInstance.isCirclesAccount(address);
-    console.log(response);
-    return response;
+    return await contractInstance.isCirclesAccount(address);
   } catch (error) {
     console.error("Error checking if Circles account:", error);
     throw error;
