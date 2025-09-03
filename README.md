@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# Circles Link Registry
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React application that allows users to link their external Ethereum addresses to Circles accounts and join the Proof of Humanity (PoH) Circles Group.
 
-## Available Scripts
+## 🌟 Features
 
-In the project directory, you can run:
+- **Multi-Wallet Support**: Connect with MetaMask, Rabby, or other injected wallets
+- **Account Linking**: Link external addresses to Circles accounts
+- **PoH Integration**: Join the PoH Circles Group if you have a verified PoH ID
+- **Bidirectional Links**: View and manage bidirectional connections between accounts
+- **Real-time Status**: Check PoH verification and group membership status
 
-### `npm start`
+## 🔧 Prerequisites
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Node.js (v14 or higher)
+- npm or yarn
+- MetaMask or compatible Web3 wallet
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Getting Started
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+```bash
+git clone https://github.com/aboutcircles/circles-link-app.git
+cd circles-link-app
+```
 
-### `npm run build`
+2. Install dependencies:
+```bash
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The app will open at [http://localhost:3000](http://localhost:3000).
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To deploy to GitHub Pages:
 
-### `npm run build` fails to minify
+```bash
+npm run deploy
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🏗️ Architecture
+
+### Key Contracts
+
+- **Linking Contract**: `0x3DE001984A546a90d05375f968a05ac39B2D52E9`
+- **PoH Membership Contract**: `0x32cB147E4C529DFFdB837f60f0118f2002401FCA`
+- **Group Service**: `0xb5a7b74103AF9D6924B9f15Ab071aC48801E9B41`
+- **Circles Hub V2**: `0xc12C1E50ABB450d6205Ea2C3Fa861b3B834d13e8`
+
+## 📱 Usage
+
+### Connecting Your Wallet
+
+1. Select your preferred wallet (MetaMask, Rabby, etc.)
+2. Connect to Gnosis Chain (will prompt if on wrong network)
+3. Approve the connection
+
+### Linking Accounts
+
+#### Direct On-Chain Link
+1. Go to the "Link" tab
+2. Enter the target account address
+3. Click "Create Link" to submit transaction
+4. Confirm the transaction in your wallet
+
+#### Account Types
+- **Circles Account**: A registered Circles user account
+- **External Account**: Any Gnosischain address (wallet, EOA, etc.)
+- At least one account in the link must be a Circles account
+
+### Joining PoH Group
+
+To join the PoH Circles Group, you need:
+1. A Circles account (you)
+2. A bidirectional link with a PoH-verified account
+3. Click "🌟 Join PoH Group" when eligible
+
+## 🔐 Smart Contract Integration
+
+### Linking Contract Functions
+```solidity
+function link(address _to) external
+function isCirclesAccount(address _account) external view returns (bool)
+function isLinkEstablished(address circlesAccount, address externalAccount) external view returns (bool)
+function getLinkedExternalAccounts(address circlesAccount) external view returns (address[])
+```
+
+### PoH Integration
+```solidity
+function hasValidPoHId(address account) external view returns (bool)
+function getPoHIdByOwner(address _account) external view returns (bytes20 pohId)
+function register(bytes20 humanityID, address _account) external
+```
+
+## ⚠️ Disclaimer
+
+This is experimental software. Use at your own risk. Always verify contract addresses and transactions before confirming.
